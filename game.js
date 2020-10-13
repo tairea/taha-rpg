@@ -31,6 +31,12 @@ var BootScene = new Phaser.Class({
       frameWidth: 32,
       frameHeight: 32,
     });
+
+    // ariki creative's Tane sprite
+    this.load.spritesheet("tane", "assets/128-Run-Sprite.png", {
+      frameWidth: 128,
+      frameHeight: 128,
+    });
   },
 
   create: function () {
@@ -106,26 +112,42 @@ var WorldScene = new Phaser.Class({
     // platforms.setCollisionByExclusion([-1]);
 
     // our player sprite created through the physics system
-    this.player = this.physics.add.sprite(
+    // this.player = this.physics.add.sprite(
+    //   game.config.width / 2,
+    //   game.config.height / 2,
+    //   "player",
+    //   6
+    // );
+    // this.player.setDepth(250);
+
+    // TANE!!!
+    this.tane = this.physics.add.sprite(
       game.config.width / 2,
       game.config.height / 2,
-      "player",
+      "tane",
       6
     );
-    this.player.setDepth(250);
+    this.tane.setScale(0.7);
+    // this.tane.anims.play("taneLeft")
+    this.tane.setDepth(250);
 
     // player touching taha events
-    this.physics.add.overlap(this.player, this.area1, this.inTaha1, null, this);
-    this.physics.add.overlap(this.player, this.area2, this.inTaha2, null, this);
-    this.physics.add.overlap(this.player, this.area3, this.inTaha3, null, this);
-    this.physics.add.overlap(this.player, this.area4, this.inTaha4, null, this);
-    this.physics.add.overlap(
-      this.player,
-      this.center,
-      this.inCenter,
-      null,
-      this
-    );
+    this.physics.add.overlap(this.tane, this.area1, this.inTaha1, null, this);
+    this.physics.add.overlap(this.tane, this.area2, this.inTaha2, null, this);
+    this.physics.add.overlap(this.tane, this.area3, this.inTaha3, null, this);
+    this.physics.add.overlap(this.tane, this.area4, this.inTaha4, null, this);
+    this.physics.add.overlap(this.tane, this.center, this.inCenter, null, this);
+    // this.physics.add.overlap(this.player, this.area1, this.inTaha1, null, this);
+    // this.physics.add.overlap(this.player, this.area2, this.inTaha2, null, this);
+    // this.physics.add.overlap(this.player, this.area3, this.inTaha3, null, this);
+    // this.physics.add.overlap(this.player, this.area4, this.inTaha4, null, this);
+    // this.physics.add.overlap(
+    //   this.player,
+    //   this.center,
+    //   this.inCenter,
+    //   null,
+    //   this
+    // );
 
     // ========== TAHA 1 BAR
     // the energy container. A simple sprite
@@ -293,8 +315,100 @@ var WorldScene = new Phaser.Class({
       repeat: -1,
     });
     // Chara
+    this.anims.create({
+      key: "charaLeft",
+      frames: this.anims.generateFrameNumbers("enemies", {
+        frames: [30, 31, 32],
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "charaRight",
+      frames: this.anims.generateFrameNumbers("enemies", {
+        frames: [36, 37, 38],
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "charaUp",
+      frames: this.anims.generateFrameNumbers("enemies", {
+        frames: [42, 43, 44],
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "charaDown",
+      frames: this.anims.generateFrameNumbers("enemies", {
+        frames: [24, 25, 26],
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+    // Temmie
+    this.anims.create({
+      key: "temmieLeft",
+      frames: this.anims.generateFrameNumbers("enemies", {
+        frames: [33, 34, 35],
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "temmieRight",
+      frames: this.anims.generateFrameNumbers("enemies", {
+        frames: [39, 40, 41],
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "temmieUp",
+      frames: this.anims.generateFrameNumbers("enemies", {
+        frames: [45, 46, 47],
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "temmieDown",
+      frames: this.anims.generateFrameNumbers("enemies", {
+        frames: [27, 28, 29],
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+
     // TODO: add other enemies.
     // TODO: create distance between them so they don't bunch up on top of each other
+
+    // TANE!!!
+    this.anims.create({
+      key: "taneDown",
+      frames: this.anims.generateFrameNumbers("tane", {
+        frames: [0, 1, 2, 3, 4, 5, 6, 7],
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "taneUp",
+      frames: this.anims.generateFrameNumbers("tane", {
+        frames: [8, 9, 10, 11, 12, 13, 14, 15],
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "taneLeft",
+      frames: this.anims.generateFrameNumbers("tane", {
+        frames: [16, 17, 18, 19, 20, 21, 22, 23],
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
 
     // add Frisk
     this.frisk = this.physics.add.sprite(
@@ -310,18 +424,33 @@ var WorldScene = new Phaser.Class({
       "enemies",
       3
     );
+    // add Chara
+    this.chara = this.physics.add.sprite(
+      game.config.width + 50,
+      game.config.height / 2,
+      "enemies",
+      30
+    );
+    // add Temmie
+    this.temmie = this.physics.add.sprite(
+      game.config.width / 2,
+      game.config.height + 50,
+      "enemies",
+      27
+    );
 
     // don't go out of the map
     this.physics.world.bounds.width = map.widthInPixels;
     this.physics.world.bounds.height = map.heightInPixels;
-    this.player.setCollideWorldBounds(true);
+    // this.player.setCollideWorldBounds(true);
+    this.tane.setCollideWorldBounds(true);
 
     // don't walk on trees
     // this.physics.add.collider(this.player, obstacles);
 
     // limit camera to map
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-    this.cameras.main.startFollow(this.player);
+    this.cameras.main.startFollow(this.tane);
     this.cameras.main.roundPixels = true; // avoid tile bleed
 
     // user input
@@ -335,40 +464,42 @@ var WorldScene = new Phaser.Class({
   update: function (time, delta) {
     //    this.controls.update(delta);
 
-    this.player.body.setVelocity(0);
+    this.tane.body.setVelocity(0);
 
     // Horizontal movement
     if (this.cursors.left.isDown) {
-      this.player.body.setVelocityX(-180);
+      this.tane.body.setVelocityX(-180);
     } else if (this.cursors.right.isDown) {
-      this.player.body.setVelocityX(180);
+      this.tane.body.setVelocityX(180);
     }
 
     // Vertical movement
     if (this.cursors.up.isDown) {
-      this.player.body.setVelocityY(-180);
+      this.tane.body.setVelocityY(-180);
     } else if (this.cursors.down.isDown) {
-      this.player.body.setVelocityY(180);
+      this.tane.body.setVelocityY(180);
     }
 
     // Update the animation last and give left/right animations precedence over up/down animations
     if (this.cursors.left.isDown) {
-      this.player.anims.play("left", true);
-      // this.player.flipX = true;
+      this.tane.anims.play("taneLeft", true);
+      this.tane.flipX = false;
     } else if (this.cursors.right.isDown) {
-      this.player.anims.play("right", true);
-      this.player.flipX = false;
+      this.tane.anims.play("taneLeft", true);
+      this.tane.flipX = true;
     } else if (this.cursors.up.isDown) {
-      this.player.anims.play("up", true);
+      this.tane.anims.play("taneUp", true);
     } else if (this.cursors.down.isDown) {
-      this.player.anims.play("down", true);
+      this.tane.anims.play("taneDown", true);
     } else {
-      this.player.anims.stop();
+      this.tane.anims.stop();
     }
 
-    // ================== Enemy follow player movement
-    this.physics.moveToObject(this.frisk, this.player, 80);
-    this.physics.moveToObject(this.sans, this.player, 80);
+    // ================== Enemy follow tane movement
+    this.physics.moveToObject(this.frisk, this.tane, 60);
+    this.physics.moveToObject(this.sans, this.tane, 80);
+    this.physics.moveToObject(this.chara, this.tane, 100);
+    this.physics.moveToObject(this.temmie, this.tane, 120);
 
     // log character movement
     //console.log(this.frisk.body.velocity)
@@ -420,7 +551,57 @@ var WorldScene = new Phaser.Class({
     ) {
       this.sans.anims.play("sansRight", true);
     }
-  },
+    // chara movement animations
+    if (
+      this.chara.body.velocity.y > 1 &&
+      this.chara.body.velocity.y > Math.abs(this.chara.body.velocity.x)
+    ) {
+      this.chara.anims.play("charaDown", true);
+    } else if (
+      this.chara.body.velocity.y < -1 &&
+      Math.abs(this.chara.body.velocity.y) >
+        Math.abs(this.chara.body.velocity.x)
+    ) {
+      this.chara.anims.play("charaUp", true);
+    } else if (
+      this.chara.body.velocity.x < -1 &&
+      Math.abs(this.chara.body.velocity.x) >
+        Math.abs(this.chara.body.velocity.y)
+    ) {
+      this.chara.anims.play("charaLeft", true);
+    } else if (
+      this.chara.body.velocity.x > 1 &&
+      Math.abs(this.chara.body.velocity.x) >
+        Math.abs(this.chara.body.velocity.y)
+    ) {
+      this.chara.anims.play("charaRight", true);
+    }
+    // temmie movement animations
+    if (
+      this.temmie.body.velocity.y > 1 &&
+      this.temmie.body.velocity.y > Math.abs(this.temmie.body.velocity.x)
+    ) {
+      this.temmie.anims.play("temmieDown", true);
+    } else if (
+      this.temmie.body.velocity.y < -1 &&
+      Math.abs(this.temmie.body.velocity.y) >
+        Math.abs(this.temmie.body.velocity.x)
+    ) {
+      this.temmie.anims.play("temmieUp", true);
+    } else if (
+      this.temmie.body.velocity.x < -1 &&
+      Math.abs(this.temmie.body.velocity.x) >
+        Math.abs(this.temmie.body.velocity.y)
+    ) {
+      this.temmie.anims.play("temmieLeft", true);
+    } else if (
+      this.temmie.body.velocity.x > 1 &&
+      Math.abs(this.temmie.body.velocity.x) >
+        Math.abs(this.temmie.body.velocity.y)
+    ) {
+      this.temmie.anims.play("temmieRight", true);
+    }
+  }, //end of update
 
   inTaha1: function (player, area) {
     console.log("in taha 1");
@@ -502,7 +683,7 @@ var config = {
     default: "arcade",
     arcade: {
       gravity: { y: 0 },
-      debug: true, // set to true to view zones
+      debug: false, // set to true to view zones
     },
   },
   scene: [BootScene, WorldScene],
